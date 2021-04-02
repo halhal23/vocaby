@@ -39,7 +39,8 @@ module Myapp
         origins "*"
         resource "*",
           headers: :any,
-          methods: [:get, :post, :options, :head]
+          methods: [:get, :post, :options, :head],
+          credentials: true
       end
     end
 
