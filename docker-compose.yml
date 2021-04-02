@@ -7,11 +7,13 @@ services:
       - vocaby-postgres-data:/var/lib/postgresql/data
     environment:
       - POSTGRES_PASSWORD=password
+    ports:
+      - '5432:5432'
   backend:
     build: 
       context: ./backend/
       dockerfile: Dockerfile
-    command: /bin/sh -c "rm -f /myapp/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    command: /bin/sh -c "rm -f /myapp/tmp/pids/server.pid && bundle install && bundle exec rails s -p 3000 -b '0.0.0.0'"
     image: rails:dev
     volumes:
       - ./backend:/myapp
