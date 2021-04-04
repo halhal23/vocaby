@@ -10,13 +10,18 @@ const Home = () => {
   const name = getUserName(selector)
   const email = getUserEmail(selector)
   const isSignedIn = getIsSignedIn(selector)
+  console.log('cookie');
+  console.log(document.cookie);
   return (
     <div>
       <div>home page</div>
       <p>{id}</p>
       <p>{name}</p>
       <p>{email}</p>
-      <p>{isSignedIn}</p>
+      {
+        isSignedIn &&
+        (<div>ログイン中です</div>)
+      }
       <button onClick={() => dispatch(push('/sign_up'))}>新規会員登録はこちらから</button>
     </div>
   )

@@ -8,6 +8,11 @@ export const UsersReducer = (state = initialState.user, action) => {
          ...state,
          ...action.payload
        }
+     case Actions.SIGN_IN:
+       return {
+         ...state,
+         ...action.payload
+       }
     case Actions.COUNT_UP:
       return {
         ...state,

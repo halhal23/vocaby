@@ -1,33 +1,23 @@
 import React, { useState } from 'react';
 import {useDispatch} from 'react-redux';
 import {push} from 'connected-react-router';
-import {signUp} from '../reducks/users/operations';
+import {signIn} from '../reducks/users/operations';
 
-const SignUp = (props) => {
+const SignIn = (props) => {
   const dispatch = useDispatch();
-  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
   const handleSubmit = event => {
     event.preventDefault();
-    dispatch(signUp(name, email, password, passwordConfirmation));
+    dispatch(signIn(email, password));
   }
+  console.log(document.cookie);
 
   return (
     <div>
-      <p>sign up page</p>
+      <p>sign in page</p>
       <form onSubmit={handleSubmit}>
-        <div>
-          <label>name</label>
-          <input
-            type="text"
-            name="name"
-            value={name}
-            onChange={event => setName(event.target.value)}
-          />
-        </div>
         <div>
           <label>email</label>
           <input
@@ -47,15 +37,6 @@ const SignUp = (props) => {
           />
         </div>
         <div>
-          <label>password(confirmation)</label>
-          <input
-            type="password"
-            name="password_confirmation"
-            value={passwordConfirmation}
-            onChange={event => setPasswordConfirmation(event.target.value)}
-          />
-        </div>
-        <div>
           <input type="submit" value="submit" />
         </div>
       </form>
@@ -65,11 +46,10 @@ const SignUp = (props) => {
       <button onClick={() => dispatch(push('/'))}>
         トップ画面に
       </button>
-      <button onClick={() => dispatch(push('/sign_in'))}>
-        ログイン画面に
+      <button onClick={() => dispatch(push('/sign_up'))}>
+        新規登録画面に
       </button>
     </div>
   )
 }
-
-export default SignUp;
+export default SignIn;
