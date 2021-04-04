@@ -1,7 +1,6 @@
 export const SIGN_UP = "SIGN_UP"
 export const SIGN_IN = "SIGN_IN"
-export const COUNT_UP = "COUNT_UP"
-export const COUNT_DOWN = "COUNT_DOWN"
+export const SIGN_OUT = "SIGN_OUT"
 
 export const signUpAction = (id, name, email) => {
   return {
@@ -27,20 +26,8 @@ export const signInAction = (id, name, email) => {
   }
 }
 
-export const countUpAction = count => {
+export const signOutAction = () => {
   return {
-    type: COUNT_UP,
-    payload: {
-      id: count
-    }
-  }
-}
-
-export const countDownAction = count => {
-  return {
-    type: COUNT_DOWN,
-    payload: {
-      id: count 
-    } 
+    type: SIGN_OUT
   }
 }

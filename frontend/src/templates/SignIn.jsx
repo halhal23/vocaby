@@ -12,7 +12,6 @@ const SignIn = (props) => {
     event.preventDefault();
     dispatch(signIn(email, password));
   }
-  console.log(document.cookie);
 
   return (
     <div>

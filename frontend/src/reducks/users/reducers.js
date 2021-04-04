@@ -2,28 +2,22 @@ import initialState from '../stores/initialState'
 import * as Actions from './actions'
 
 export const UsersReducer = (state = initialState.user, action) => {
-   switch (action.type) {
-     case Actions.SIGN_UP:
-       return {
-         ...state,
-         ...action.payload
-       }
-     case Actions.SIGN_IN:
-       return {
-         ...state,
-         ...action.payload
-       }
-    case Actions.COUNT_UP:
+  switch (action.type) {
+    case Actions.SIGN_UP:
       return {
         ...state,
         ...action.payload
       }
-    case Actions.COUNT_DOWN:
+    case Actions.SIGN_IN:
       return {
         ...state,
         ...action.payload
       }
-     default:
-       return state
-   } 
+    case Actions.SIGN_OUT:
+      return {
+        ...state
+      }
+    default:
+      return state
+  } 
 }
