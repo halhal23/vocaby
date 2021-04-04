@@ -17,6 +17,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
 
   #本番環境用のオリジン設定
   allow do
+      # 仮
       origins 'https:vocaby.com'
 
       resource '*',
