@@ -7,8 +7,6 @@ const Auth = ({children}) => {
   const dispatch = useDispatch();
   const selector = useSelector(state => state);
   const isSignedIn = getIsSignedIn(selector);
-  console.log('Authコンポーネント　↓ログインしますか？');
-  console.log(isSignedIn);
   if (isSignedIn) {
     return children
   } else {
