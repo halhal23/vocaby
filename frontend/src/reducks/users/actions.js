@@ -28,6 +28,12 @@ export const signInAction = (id, name, email) => {
 
 export const signOutAction = () => {
   return {
-    type: SIGN_OUT
+    type: SIGN_OUT,
+    payload: {
+      id: null,
+      name: '',
+      email: '',
+      isSignedIn: false
+    }
   }
 }
