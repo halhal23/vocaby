@@ -5,6 +5,7 @@ WORKDIR /usr/src/app
 # package.jsonとyarn.lockを/usr/src/appにコピー
 COPY ["package.json", "yarn.lock", "./"]
 # パッケージをインストール
+# RUN yarn add react-scripts
 RUN yarn install
 # ファイルを全部作業用ディレクトリにコピー
 COPY . .

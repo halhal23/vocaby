@@ -1,5 +1,4 @@
 import React from 'react';
-import '../assets/styles/header.css';
 import {useSelector} from 'react-redux';
 import {getIsSignedIn} from '../reducks/users/selectors';
 import {push} from 'connected-react-router';
@@ -16,6 +15,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+    position: 'fixed',
+    left: 0,
+    top: 0,
+    width: '100%'
   },
   menuButton: {
     marginRight: theme.spacing(2),
@@ -32,8 +35,6 @@ const Header = () => {
   const dispatch = useDispatch();
   const selector = useSelector(state => state);
   const isSignedIn = getIsSignedIn(selector);
-  console.log('header rendered');
-  console.log(isSignedIn);
   const classes = useStyles();
 
   return (
