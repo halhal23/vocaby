@@ -8,8 +8,6 @@ import * as History from 'history'
 import {ConnectedRouter} from 'connected-react-router'
 import {Header} from './components';
 import './assets/styles/reset.css'
-import {ThemeProvider} from '@material-ui/core/styles';
-import {theme} from './assets/styles/theme'
 
 const history = History.createBrowserHistory();
 export const store = createStore(history);
@@ -17,10 +15,8 @@ export const store = createStore(history);
 ReactDOM.render(
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <ThemeProvider theme={theme}>
-        <Header />
-        <App />
-      </ThemeProvider>
+      <Header />
+      <App />
     </ConnectedRouter>
   </Provider>,
   document.getElementById('root')

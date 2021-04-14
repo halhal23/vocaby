@@ -1,72 +1,84 @@
 import React, { useState } from 'react';
 import {useDispatch} from 'react-redux';
-import {push} from 'connected-react-router';
 import {signIn} from '../reducks/users/operations';
 import styled from 'styled-components';
+// material-ui
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import EmailIcon from '@material-ui/icons/Email';
+import LockIcon from '@material-ui/icons/Lock';
 
 const Wrapper = styled.div`
   height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Content = styled.div`
-  width: 300px;
-  box-shadow: 0 0 10px #ccc;
-  border-radius: 10px;
+  width: 500px;
+  margin: 50px auto 0;
 `;  
 
-const Title = styled.p`
+const TitleWrapper = styled.div`
   text-align: center;
-`; 
+  padding: 100px 0 ;
+  font-size: 30px;
+  background: rgb(75, 11, 0);
+  color: #fff;
+  font-weight: bold;
+`;
 
 const SignIn = (props) => {
   const dispatch = useDispatch();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = event => {
-    event.preventDefault();
+  const handleSubmit = () => {
     dispatch(signIn(email, password));
   }
 
   return (
     <Wrapper>
+      <TitleWrapper>
+        SIGN IN
+      </TitleWrapper>
       <Content>
-        <Title>サインイン</Title>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label>email</label>
-            <input
-              type="email"
-              name="email"
-              value={email}
-              onChange={event => setEmail(event.target.value)}
-            />
-          </div>
-          <div>
-            <label>password</label>
-            <input
-              type="password"
-              name="password"
-              value={password}
-              onChange={event => setPassword(event.target.value)}
-            />
-          </div>
-          <div>
-            <input type="submit" value="submit" />
-          </div>
+          <Grid container alignItems="flex-end">
+            <Grid item xs={1}>
+              <EmailIcon />
+            </Grid>
+            <Grid item xs={11}>
+              <TextField
+                label="メールアドレス"
+                type="email"
+                value={email}
+                onChange={event => setEmail(event.target.value)}
+                fullWidth/>
+            </Grid>
+          </Grid>
+          <br />
+          <Grid container alignItems="flex-end">
+            <Grid item xs={1}>
+              <LockIcon />
+            </Grid>
+            <Grid item xs={11}>
+              <TextField
+                label="パスワード"
+                type="password"
+                value={password}
+                onChange={event => setPassword(event.target.value)}
+                fullWidth/>
+            </Grid>
+          </Grid>
+          <br />
+          <br />
+          <br />
+          <Grid container justify="center">
+            <Button variant="outlined" color="primary" size="large" onClick={() => handleSubmit()}>
+              Sign in
+            </Button>
+          </Grid>
         </form>
-        <br />
-        <br />
-        <br />
-        <button onClick={() => dispatch(push('/'))}>
-          トップ画面に
-        </button>
-        <button onClick={() => dispatch(push('/sign_up'))}>
-          新規登録画面に
-        </button>
       </Content>
     </Wrapper>
   )
