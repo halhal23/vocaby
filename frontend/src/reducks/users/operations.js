@@ -14,7 +14,7 @@ export const signUp = (name, email, password, passowrd_confirmation) => {
       .then(res => {
         const data = res.data.data;
         dispatch(signUpAction(data.id, data.name, data.email))
-        dispatch(push('/'));
+        dispatch(push('/wordbooks'));
       })
       .catch(err => {
         console.log(err);
@@ -33,7 +33,7 @@ export const signIn = (email, password) => {
       .then(res => {
         const data = res.data.data;
         dispatch(signInAction(data.id, data.name, data.email))
-        dispatch(push('/'));
+        dispatch(push('/wordbooks'));
       })
       .catch(err => {
         dispatch(push('/sign_in'));
