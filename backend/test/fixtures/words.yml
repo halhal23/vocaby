@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  level: one
+  japanese: MyString
+  english: MyString
+  part: MyString
+
+two:
+  level: two
+  japanese: MyString
+  english: MyString
+  part: MyString

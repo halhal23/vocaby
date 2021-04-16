@@ -10,15 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_04_032316) do
+ActiveRecord::Schema.define(version: 2021_04_16_152927) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "products", force: :cascade do |t|
+  create_table "levels", force: :cascade do |t|
     t.string "name"
+    t.bigint "wordbook_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["wordbook_id"], name: "index_levels_on_wordbook_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -29,4 +31,22 @@ ActiveRecord::Schema.define(version: 2021_04_04_032316) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "wordbooks", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "words", force: :cascade do |t|
+    t.bigint "level_id", null: false
+    t.string "japanese"
+    t.string "english"
+    t.string "part"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["level_id"], name: "index_words_on_level_id"
+  end
+
+  add_foreign_key "levels", "wordbooks"
+  add_foreign_key "words", "levels"
 end
