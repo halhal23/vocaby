@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import API from '../api'
 // material-ui
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import Grid from '@material-ui/core/Grid';
@@ -42,15 +43,27 @@ const LevelGrid = styled(Grid)`
 `;
 
 const Wordbooks = () => {
+  const [wordbooks, setWordbooks] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedWordCount, setSelectedWordCount] = useState(null);
   const [isRetry, setIsRetry] = useState(false);
+
+  useEffect(() => {
+    console.log('do effect');
+    API.get('/wordbooks')
+      .then(res => {
+        console.log(res);
+        setWordbooks(res.data);
+      })
+  }, [])
 
   const handleClickOpen = () => {
     setModalOpen(true);
   };
 
   const handleClose = () => {
+    setSelectedWordCount(null);
+    setIsRetry(false);
     setModalOpen(false);
   };
 
@@ -70,112 +83,125 @@ const Wordbooks = () => {
         <Grid item> <MenuBookIcon /> </Grid>
         <Grid item> 公開中の単語帳 </Grid>
       </Grid>
-      <WordbookContainer>
-        <WordbookGrid container>
-          <Grid item sm={6} xs={12}>
-            <Box p={2}>
-              <Box mb={3}>
-                <Typography variant="h5">ターゲット1900</Typography>
-              </Box>
-              <Typography color="textSecondary">単語数: 1200語</Typography>
-            </Box>
-          </Grid>
-          <Grid item sm={3} xs={6}>
-            <Box textAlign="center" fontSize={15} color="#999" my={2}>コンプリート率</Box>
-            <Box position="relative" display="flex" justifyContent="center" alignItems="center" width={1} mb={2}>
-              <CircularProgress value={80} variant="determinate" size={100} thickness={5} />
-              <Box
-                top={0}
-                left={0}
-                bottom={0}
-                right={0}
-                position="absolute"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Box>
-                  <Typography component="span" variant="h4">80</Typography>
-                  <Typography variant="caption" color="textSecondary">%</Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item sm={3} xs={6}>
-            <Box textAlign="center" fontSize={15} color="#999" my={2}>正答率</Box>
-            <Box position="relative" display="flex" justifyContent="center" alignItems="center" width={1} mb={2}>
-              <CircularProgress value={30} variant="determinate" size={100} thickness={5} />
-              <Box
-                top={0}
-                left={0}
-                bottom={0}
-                right={0}
-                position="absolute"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Box>
-                  <Typography component="span" variant="h4">30</Typography>
-                  <Typography variant="caption" color="textSecondary">%</Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
-        </WordbookGrid>
-        <LevelGrid container alignItems="center">
-          <Grid item sm={3} xs={6}>
-            <Box px={2} py={2}>
-              <Typography variant="subtitle1">レベル1</Typography>
-            </Box>
-          </Grid>
-          <Grid item sm={3} xs={6}>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-              テストを選択する
-            </Button>
-          </Grid>
-          <Grid item sm={3} xs={6}>
-            <Box position="relative" display="flex" justifyContent="center" alignItems="center" width={1} py={1}>
-              <CircularProgress value={50} variant="determinate" size={60} thickness={5} />
-              <Box
-                top={0}
-                left={0}
-                bottom={0}
-                right={0}
-                position="absolute"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Box>
-                  <Typography component="span" variant="h6">50</Typography>
-                  <Typography variant="caption" color="textSecondary">%</Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item sm={3} xs={6}>
-            <Box position="relative" display="flex" justifyContent="center" alignItems="center" width={1} py={1}>
-              <CircularProgress value={50} variant="determinate" size={60} thickness={5} />
-              <Box
-                top={0}
-                left={0}
-                bottom={0}
-                right={0}
-                position="absolute"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Box>
-                  <Typography component="span" variant="h6">50</Typography>
-                  <Typography variant="caption" color="textSecondary">%</Typography>
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
-        </LevelGrid>
-      </WordbookContainer>
+        {
+          wordbooks.map((wordbook, index) => {
+            return (
+              <WordbookContainer key={index}>
+                <WordbookGrid container>
+                  <Grid item sm={6} xs={12}>
+                    <Box p={2}>
+                      <Box mb={3}>
+                        <Typography variant="h5">{ wordbook.name }</Typography>
+                      </Box>
+                      <Typography color="textSecondary">単語数: { wordbook.word_count}語</Typography>
+                    </Box>
+                  </Grid>
+                  <Grid item sm={3} xs={6}>
+                    <Box textAlign="center" fontSize={15} color="#999" my={2}>コンプリート率</Box>
+                    <Box position="relative" display="flex" justifyContent="center" alignItems="center" width={1} mb={2}>
+                      <CircularProgress value={wordbook.complete_rate} variant="determinate" size={100} thickness={5} />
+                      <Box
+                        top={0}
+                        left={0}
+                        bottom={0}
+                        right={0}
+                        position="absolute"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Box>
+                          <Typography component="span" variant="h4">{ wordbook.complete_rate }</Typography>
+                          <Typography variant="caption" color="textSecondary">%</Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Grid>
+                  <Grid item sm={3} xs={6}>
+                    <Box textAlign="center" fontSize={15} color="#999" my={2}>正答率</Box>
+                    <Box position="relative" display="flex" justifyContent="center" alignItems="center" width={1} mb={2}>
+                      <CircularProgress value={wordbook.current_rate} variant="determinate" size={100} thickness={5} />
+                      <Box
+                        top={0}
+                        left={0}
+                        bottom={0}
+                        right={0}
+                        position="absolute"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                      >
+                        <Box>
+                          <Typography component="span" variant="h4">{ wordbook.current_rate }</Typography>
+                          <Typography variant="caption" color="textSecondary">%</Typography>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Grid>
+                </WordbookGrid>
+                {
+                  wordbook.levels.map((level, index) => {
+                    return (
+                      <LevelGrid container alignItems="center" key={index}>
+                        <Grid item sm={3} xs={6}>
+                          <Box px={2} py={2}>
+                            <Typography variant="subtitle1">{ level.name }</Typography>
+                            <Typography variant="caption" color="textSecondary">単語数: { level.word_count }語</Typography>
+                          </Box>
+                        </Grid>
+                        <Grid item sm={3} xs={6}>
+                          <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                            テストを選択する
+                          </Button>
+                        </Grid>
+                        <Grid item sm={3} xs={6}>
+                          <Box position="relative" display="flex" justifyContent="center" alignItems="center" width={1} py={1}>
+                            <CircularProgress value={level.complete_rate} variant="determinate" size={60} thickness={5} />
+                            <Box
+                              top={0}
+                              left={0}
+                              bottom={0}
+                              right={0}
+                              position="absolute"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
+                              <Box>
+                                <Typography component="span" variant="h6">{ level.complete_rate }</Typography>
+                                <Typography variant="caption" color="textSecondary">%</Typography>
+                              </Box>
+                            </Box>
+                          </Box>
+                        </Grid>
+                        <Grid item sm={3} xs={6}>
+                          <Box position="relative" display="flex" justifyContent="center" alignItems="center" width={1} py={1}>
+                            <CircularProgress value={level.current_rate} variant="determinate" size={60} thickness={5} />
+                            <Box
+                              top={0}
+                              left={0}
+                              bottom={0}
+                              right={0}
+                              position="absolute"
+                              display="flex"
+                              alignItems="center"
+                              justifyContent="center"
+                            >
+                              <Box>
+                                <Typography component="span" variant="h6">{ level.current_rate }</Typography>
+                                <Typography variant="caption" color="textSecondary">%</Typography>
+                              </Box>
+                            </Box>
+                          </Box>
+                        </Grid>
+                      </LevelGrid>
+                    )
+                  }) //wordbook.levels.map
+                }
+              </WordbookContainer>
+            )
+          }) //wordbooks.map
+        }
       <Dialog
         open={modalOpen}
         onClose={handleClose}
