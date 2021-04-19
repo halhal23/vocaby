@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { useDispatch } from 'react-redux';
+import { push } from 'connected-react-router';
 // material-ui
 import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
@@ -8,6 +10,7 @@ import { makeStyles, createStyles } from '@material-ui/core/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import useInterval from 'use-interval';
 import queryString from 'query-string';
+import API from '../api';
 
 const TestWrapper = styled.div`
   background: #fff;
@@ -42,6 +45,7 @@ const useStyles = makeStyles(() => {
 
 const TakeTest = (props) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
   const [countTime, setCountTime] = useState(100);
   const [nowAnswering, setNowAnswering] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0); 
@@ -51,44 +55,17 @@ const TakeTest = (props) => {
 
   useEffect(() => {
     console.log('effect');
-    console.log(queryString.parse(props.location.search));
     const queryParams = queryString.parse(props.location.search);
     setLimit(queryParams.limit);
-    let word_datas = [
-      {
-        question: { id: 1, japanese: '質問1', english: 'question1', part: '名詞' },
-        choices: [
-          { id: 1, japanese: '選択1', english: 'choise1' },
-          { id: 3, japanese: '選択2', english: 'choise2' },
-          { id: 4, japanese: '選択3', english: 'choise3' },
-          { id: 5, japanese: '選択4', english: 'choise4' },
-        ]
-      },
-      {
-        question: { id: 2, japanese: '質問2', english: 'question2', part: '動詞' },
-        choices: [
-          { id: 2, japanese: '選択2-1', english: 'choise2-1' },
-          { id: 4, japanese: '選択2-2', english: 'choise2-2' },
-          { id: 5, japanese: '選択2-3', english: 'choise2-3' },
-          { id: 6, japanese: '選択2-4', english: 'choise2-4' },
-        ]
-      },
-      {
-        question: { id: 3, japanese: '質問3', english: 'question3', part: '形容詞' },
-        choices: [
-          { id: 3, japanese: '選択3-1', english: 'choise3-1' },
-          { id: 4, japanese: '選択3-2', english: 'choise3-2' },
-          { id: 5, japanese: '選択3-3', english: 'choise3-3' },
-          { id: 6, japanese: '選択3-4', english: 'choise3-4' },
-        ]
-      }
-    ]
-    word_datas = word_datas.map((data) => {
-      const shuffled_choices = shuffle(data.choices);
-      return { question: data.question, choices: shuffled_choices }
-    })
-    setWords(word_datas);
-    setNowAnswering(true);
+    API.get('/words/start', { params: { limit: queryParams.limit }})
+      .then(res => {
+        const word_datas = res.data.data.map((value) => {
+          const shuffled_choices = shuffle(value.choices);
+          return { question: value.question, choices: shuffled_choices }
+        })
+        setWords(word_datas);
+        setNowAnswering(true);
+      })
   }, [])
 
   useInterval(() => {
@@ -103,6 +80,7 @@ const TakeTest = (props) => {
     if (currentIndex >= (limit - 1)) {
       console.log('finish');
       setCurrentIndex(0);
+      dispatch(push('/tests/result'));
     } else {
       setCurrentIndex(prevNumber => prevNumber + 1);
     } 
