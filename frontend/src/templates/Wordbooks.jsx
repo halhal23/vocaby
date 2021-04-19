@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import API from '../api'
+import { push } from 'connected-react-router';
 // material-ui
 import MenuBookIcon from '@material-ui/icons/MenuBook';
 import Grid from '@material-ui/core/Grid';
@@ -43,6 +45,7 @@ const LevelGrid = styled(Grid)`
 `;
 
 const Wordbooks = () => {
+  const dispatch = useDispatch();
   const [wordbooks, setWordbooks] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedWordCount, setSelectedWordCount] = useState(null);
@@ -232,7 +235,7 @@ const Wordbooks = () => {
           <Button onClick={handleClose}>
             キャンセル
           </Button>
-          <Button onClick={handleClose} color="primary" disabled={selectedWordCount === null}>
+          <Button onClick={() => dispatch(push(`/tests/take?limit=${selectedWordCount}`))} color="primary" disabled={selectedWordCount === null}>
             テストを開始する
           </Button>
         </Box>
