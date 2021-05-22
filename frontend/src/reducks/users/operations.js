@@ -10,7 +10,7 @@ export const signUp = (name, email, password, passowrd_confirmation) => {
       password: password,
       passowrd_confirmation: passowrd_confirmation
     }
-    API.post('signup', payload, { withCredentials: true })
+    API.post('signup', payload)
       .then(res => {
         const data = res.data.data;
         dispatch(signUpAction(data.id, data.name, data.email))
@@ -29,7 +29,7 @@ export const signIn = (email, password) => {
       email: email,
       password: password,
     }
-    API.post('signin', payload, { withCredentials: true })
+    API.post('signin', payload)
       .then(res => {
         const data = res.data.data;
         dispatch(signInAction(data.id, data.name, data.email))
@@ -43,7 +43,7 @@ export const signIn = (email, password) => {
 
 export const signOut = () => {
   return async (dispatch, getState) => {
-    return API.delete('signout', { withCredentials: true })
+    return API.delete('signout')
       .then(res => {
         if (res.data.logged_in === false) {
           dispatch(signOutAction())
@@ -56,7 +56,7 @@ export const signOut = () => {
 
 export const listenAuthState = () => {
   return async (dispatch) => {
-    return API.get('/logged_in', { withCredentials: true })
+    return API.get('/logged_in')
       .then(res => {
         if (res.data.logged_in === true) {
           const data = res.data.data;

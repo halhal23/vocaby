@@ -22,7 +22,7 @@ const TitleWrapper = styled.div`
   text-align: center;
   padding: 100px 0 ;
   font-size: 30px;
-  background: rgb(75, 11, 0);
+  background: rgb(76, 11, 0);
   color: #fff;
   font-weight: bold;
 `;

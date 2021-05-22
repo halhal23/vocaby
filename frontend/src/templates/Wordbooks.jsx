@@ -50,6 +50,7 @@ const Wordbooks = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedWordCount, setSelectedWordCount] = useState(null);
   const [isRetry, setIsRetry] = useState(false);
+  const [selectedLevelId, setSelectedLevelId] = useState(false);
 
   useEffect(() => {
     console.log('do effect');
@@ -60,7 +61,8 @@ const Wordbooks = () => {
       })
   }, [])
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (levelId) => {
+    setSelectedLevelId(levelId);
     setModalOpen(true);
   };
 
@@ -153,7 +155,7 @@ const Wordbooks = () => {
                           </Box>
                         </Grid>
                         <Grid item sm={3} xs={6}>
-                          <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                          <Button variant="outlined" color="primary" onClick={() => handleClickOpen(level.id)}>
                             テストを選択する
                           </Button>
                         </Grid>
@@ -235,7 +237,7 @@ const Wordbooks = () => {
           <Button onClick={handleClose}>
             キャンセル
           </Button>
-          <Button onClick={() => dispatch(push(`/tests/take?limit=${selectedWordCount}`))} color="primary" disabled={selectedWordCount === null}>
+          <Button onClick={() => dispatch(push(`/tests/take?level_id=${selectedLevelId}&limit=${selectedWordCount}`))} color="primary" disabled={selectedWordCount === null}>
             テストを開始する
           </Button>
         </Box>

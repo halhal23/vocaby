@@ -3,7 +3,7 @@ import {Switch, Route} from 'react-router';
 import {Home, SignUp, SignIn, Wordbooks, TakeTest, ResultTest} from './templates'
 import Auth from './Auth';
 
-const Router = () => {
+const TestRouter = () => {
   return (
     <Switch>
       <Route exact path='/sign_up' component={SignUp} />
@@ -18,4 +18,4 @@ const Router = () => {
   )
 }
 
-export default Router;
+export default TestRouter;

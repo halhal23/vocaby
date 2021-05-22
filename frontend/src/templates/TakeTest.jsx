@@ -52,18 +52,20 @@ const TakeTest = (props) => {
   const [words, setWords] = useState([]);
   const [isCorrect, setIsCorrect] = useState(false);
   const [limit, setLimit] = useState(null);
+  const [testId, setTestId] = useState(null);
 
   useEffect(() => {
     console.log('effect');
     const queryParams = queryString.parse(props.location.search);
     setLimit(queryParams.limit);
-    API.get('/words/start', { params: { limit: queryParams.limit }})
+    API.get('/tests/start', { params: { limit: queryParams.limit }})
       .then(res => {
-        const word_datas = res.data.data.map((value) => {
+        const word_datas = res.data.questions.map((value) => {
           const shuffled_choices = shuffle(value.choices);
           return { question: value.question, choices: shuffled_choices }
         })
         setWords(word_datas);
+        setTestId(res.data.test_id);
         setNowAnswering(true);
       })
   }, [])
@@ -80,7 +82,7 @@ const TakeTest = (props) => {
     if (currentIndex >= (limit - 1)) {
       console.log('finish');
       setCurrentIndex(0);
-      dispatch(push('/tests/result'));
+      dispatch(push(`/tests/${testId}/result`));
     } else {
       setCurrentIndex(prevNumber => prevNumber + 1);
     } 
@@ -91,8 +93,18 @@ const TakeTest = (props) => {
   const doAnswer = (choicedWordId) => {
     if (choicedWordId === words[currentIndex].question.id) {
       setIsCorrect(true);
+      API.post('results', { 
+        test_id: testId,
+        word_id: words[currentIndex].question.id,
+        is_correct: true
+      })
     } else {
       setIsCorrect(false);
+      API.post('results', { 
+        test_id: testId,
+        word_id: words[currentIndex].question.id,
+        is_correct: false
+      })
     }
     setCountTime(-10);
     setNowAnswering(false);
