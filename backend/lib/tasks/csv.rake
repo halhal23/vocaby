@@ -12,7 +12,7 @@ namespace :csv do
     task import: :environment do
       CSV.foreach("csv-datas/db-words.csv", headers: true) do |row|
         level = Level.find_or_create_by(name: row[4], wordbook_id: row[5])
-        puts "importing #{row[0] row[1]}"
+        puts "importing #{row[0]} #{row[1]}"
         Word.create!({
           id: row[0],
           english: row[1],

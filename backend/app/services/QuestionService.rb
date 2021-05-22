@@ -1,6 +1,7 @@
 class QuestionService
-  def initialize(user, limit = 10)
+  def initialize(user, level, limit = 10)
     @user = user
+    @level = level
     @limit = limit
   end
 

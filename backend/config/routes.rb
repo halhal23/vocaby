@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1, format: 'json' do
       resources :wordbooks, only: [:index]
-      resources :words, only: [] do
+      resources :results, only: [:create]
+      resources :tests, only: [:show] do
         collection do
           get :start
         end

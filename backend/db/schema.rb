@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_16_152927) do
+ActiveRecord::Schema.define(version: 2021_04_19_071144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -21,6 +21,25 @@ ActiveRecord::Schema.define(version: 2021_04_16_152927) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["wordbook_id"], name: "index_levels_on_wordbook_id"
+  end
+
+  create_table "results", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "test_id", null: false
+    t.bigint "word_id", null: false
+    t.boolean "is_correct"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["test_id"], name: "index_results_on_test_id"
+    t.index ["user_id"], name: "index_results_on_user_id"
+    t.index ["word_id"], name: "index_results_on_word_id"
+  end
+
+  create_table "tests", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_tests_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -48,5 +67,9 @@ ActiveRecord::Schema.define(version: 2021_04_16_152927) do
   end
 
   add_foreign_key "levels", "wordbooks"
+  add_foreign_key "results", "tests"
+  add_foreign_key "results", "users"
+  add_foreign_key "results", "words"
+  add_foreign_key "tests", "users"
   add_foreign_key "words", "levels"
 end
